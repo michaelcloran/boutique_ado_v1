@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 from .models import UserProfile
 from .forms import UserProfileForm
 
+from .forms import UpdateUserForm
+
 from checkout.models import Order
 
 @login_required
@@ -14,13 +16,16 @@ def profile(request):
     profile = get_object_or_404(UserProfile, user=request.user)
 
     if request.method == 'POST':
+        user_form = UpdateUserForm(request.POST, instance=request.user)
         form = UserProfileForm(request.POST, instance=profile)
-        if form.is_valid():
+        if user_form.is_valid() and form.is_valid():
+            user_form.save()
             form.save()
             messages.success(request, 'Profile updated successfully')
         else:
             message.error(request, 'Update failed. Please ensure the form is valid.')
     else:
+        user_form = UpdateUserForm(instance=request.user)
         form = UserProfileForm(instance=profile)
         
     orders = profile.orders.all()
@@ -28,6 +33,7 @@ def profile(request):
     template = 'profiles/profile.html'
     context = {
         'form': form,
+        'user_form': user_form,
         'orders': orders,
         'on_profile_page': True
     }

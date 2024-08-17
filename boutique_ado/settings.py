@@ -29,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['boutiqueadov1ok-5f60b9e91549.herokuapp.com','8000-michaelclor-boutiqueado-mlt6sv4ogqa.ws.codeinstitute-ide.net',]
 
